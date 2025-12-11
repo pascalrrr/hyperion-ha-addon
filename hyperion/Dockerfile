@@ -1,5 +1,5 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:7.8.3
-FROM ${BUILD_FROM} AS build
+ARG BUILD_FROM
+FROM ${BUILD_FROM:-ghcr.io/hassio-addons/debian-base/amd64:7.8.3} AS build
 
 ARG BUILD_VERSION
 
@@ -16,15 +16,16 @@ RUN apt-get update && apt-get install --no-upgrade \
 
 # based on the AUR PKGBUILD for hyperion.ng, for the original see:
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=hyperion.ng-git
-RUN git clone --branch ${BUILD_VERSION} https://github.com/hyperion-project/hyperion.ng.git hyperion/
-RUN for i in /tmp/patches/*.patch; do \
+RUN git clone --branch ${BUILD_VERSION} https://github.com/hyperion-project/hyperion.ng.git hyperion/ && \
+	for i in /tmp/patches/*.patch; do \
     patch -d /tmp/hyperion -p1 < "${i}"; done
 WORKDIR /tmp/hyperion
-RUN git submodule update --init --recursive
-RUN test -d build || mkdir build
-RUN test -e build/bin/hyperiond || (cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make)
+RUN git submodule update --init --recursive && \
+	test -d build || mkdir build
+WORKDIR /tmp/hyperion/build
+RUN	test -e bin/hyperiond || cmake -DCMAKE_BUILD_TYPE=Release .. && make
 
-FROM ${BUILD_FROM} AS final
+FROM ${BUILD_FROM:-ghcr.io/hassio-addons/debian-base/amd64:7.8.3} AS final
 
 WORKDIR /data
 
@@ -32,11 +33,12 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # final dependencies
 RUN apt-get update && apt-get install --no-upgrade \
-    nginx -y
-RUN apt-get update && apt-get install --no-upgrade \
+    nginx --no-install-recommends -y && \
+	apt-get update && apt-get install --no-upgrade \
     libturbojpeg0 libasound2-dev qt6-serialport-dev \
     qt6-websockets-dev libpython3-dev libqt6sql6-sqlite \
-    libcec-dev --no-install-recommends -y
+    libcec-dev --no-install-recommends -y && \
+	rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /tmp/hyperion/build/bin/* /usr/bin
 RUN install -d /usr/share/hyperion/webconfig
