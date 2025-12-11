@@ -8,9 +8,10 @@ RUN apt-get update && apt-get install --no-upgrade \
     git cmake build-essential ninja-build qt6-base-dev \
     qt6-serialport-dev qt6-websockets-dev libxkbcommon-dev \
     libvulkan-dev libgl1-mesa-dev libusb-1.0-0-dev python3-dev \
-    libasound2-dev libturbojpeg0-dev libjpeg-dev libssl-dev \
-    libcec-dev libp8-platform-dev libudev-dev pkg-config \
-    libftdi1-dev -y --no-install-recommends
+    libasound2-dev libturbojpeg0-dev libjpeg-dev libssl-dev libcec-dev \
+    libp8-platform-dev libudev-dev pkg-config libftdi1-dev \
+    libxcb-render0-dev libxcb-shm0-dev libxcb-image0-dev \
+    libxcb-randr0-dev -y --no-install-recommends
 
 # based on the AUR PKGBUILD for hyperion.ng, for the original see:
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=hyperion.ng-git
