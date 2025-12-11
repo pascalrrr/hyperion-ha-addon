@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install --no-upgrade \
     libasound2-dev libturbojpeg0-dev libjpeg-dev libssl-dev libcec-dev \
     libp8-platform-dev libudev-dev pkg-config libftdi1-dev \
     libxcb-render0-dev libxcb-shm0-dev libxcb-image0-dev \
-    libxcb-randr0-dev -y --no-install-recommends
+    libxcb-randr0-dev libxrandr-dev -y --no-install-recommends
 
 # based on the AUR PKGBUILD for hyperion.ng, for the original see:
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=hyperion.ng-git
