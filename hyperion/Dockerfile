@@ -22,7 +22,7 @@ WORKDIR /tmp/hyperion
 RUN git submodule update --init --recursive && \
 	(test -d build || mkdir build)
 WORKDIR /tmp/hyperion/build
-RUN	test -e bin/hyperiond || cmake -DCMAKE_BUILD_TYPE=Release .. && make
+RUN	cmake -DCMAKE_BUILD_TYPE=Release .. && make
 
 FROM ${BUILD_FROM:-ghcr.io/hassio-addons/debian-base/amd64:7.8.3} AS final
 
