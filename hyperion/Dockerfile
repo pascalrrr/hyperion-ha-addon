@@ -3,7 +3,7 @@ FROM ${BUILD_FROM:-ghcr.io/hassio-addons/debian-base/amd64:7.8.3} AS build
 
 WORKDIR /tmp
 COPY patches/*.patch patches/
-
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install --no-upgrade \
     git cmake build-essential ninja-build qt6-base-dev \
     qt6-serialport-dev qt6-websockets-dev libxkbcommon-dev \
@@ -31,6 +31,7 @@ WORKDIR /data
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # final dependencies
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install --no-upgrade \
     nginx --no-install-recommends -y && \
 	apt-get update && apt-get install --no-upgrade \
