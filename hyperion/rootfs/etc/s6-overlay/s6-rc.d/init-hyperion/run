@@ -46,7 +46,7 @@ if [ ! -f "/ssl/hyperion/crt.pem" ]; then
     echo subjectAltName=DNS:hyperion.hass.io,IP:127.0.0.1 \
     ) \
     -subj /CN=hyperion.hass.io
-    mkdir /ssl/hyperion
+    [[ ! -d '/ssl/hyperion' ]] && mkdir /ssl/hyperion
     mv ./*.pem /ssl/hyperion
 fi
 

@@ -4,9 +4,14 @@
 # Home Assistant Add-on: Hyperion (Next Generation)
 # Send Hyperion Discovery information to Home Assistant
 # ==============================================================================
+declare config
 web_port="$(bashio::addon.port 8091)"
 web_port=${web_port:-8091}
 host_name=$(bashio::addon.hostname)
+
+# Wait for Hyperion Web UI to come up
+bashio::net.wait_for "$web_port" 127.0.0.1 300
+
 config=$(
     bashio::var.json \
         host "$host_name" \

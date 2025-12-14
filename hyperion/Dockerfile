@@ -59,7 +59,7 @@ RUN chmod +x /etc/s6-overlay/s6-rc.d/*/*
 WORKDIR /data
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-HEALTHCHECK --interval=15s --start-period=60s --start-interval=2s --timeout=3s --retries=3 \
+HEALTHCHECK --interval=5s  --timeout=3s --retries=3 \
     CMD curl --fail http://127.0.0.1:8090/health || exit 1
 
 
