@@ -17,13 +17,14 @@ RUN apt-get update && apt-get install --no-upgrade \
     nginx wget git patch libpython3.11 libturbojpeg0 \
     libasound2 libusb-1.0-0 libftdi1 libcec6 libcec-dev \
     libqt5serialport5 libqt5websockets5 libqt5sql5-sqlite \
-    libqt5svg5  -y --no-install-recommends
+    libqt5svg5  -y --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/* && \
 
 # Pull lib/openssl1.1 because Hyperion is built against these
 RUN wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/openssl_${OPENSSL_VERSION}_${TARGETARCH}.deb \
-    -O /tmp/openssl1.1.deb && \
+    --progress=dot:giga -O /tmp/openssl1.1.deb && \
     wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.1_${LIBSSL_VERSION}_${TARGETARCH}.deb \
-    -O /tmp/libssl1.1.deb && \
+    --progress=dot:giga -O /tmp/libssl1.1.deb && \
     apt-get install --no-upgrade \
     /tmp/libssl1.1.deb /tmp/openssl1.1.deb \
     -y --no-install-recommends --allow-downgrades
@@ -33,11 +34,11 @@ RUN git clone --branch ${HYPERION_VERSION} --depth 1 ${HYPERION_URL}.git hyperio
 	for i in /tmp/patches/*.patch; do \
     patch -d /tmp/hyperion -p1 < "${i}"; done && \
     # Determine build architechure for Hyperion
-    if [ "${TARGETARCH}" == "arm64" ]; then HYPERION_ARCH=arm64; fi && \
-    if [ "${TARGETARCH}" == "amd64" ]; then HYPERION_ARCH=x86_64; fi && \
+    if [ "${TARGETARCH}" = "arm64" ]; then HYPERION_ARCH=arm64; fi && \
+    if [ "${TARGETARCH}" = "amd64" ]; then HYPERION_ARCH=x86_64; fi && \
     # Download precompiled binaries for Hyperion
     wget ${HYPERION_URL}/releases/download/${HYPERION_VERSION}/Hyperion-${HYPERION_VERSION}-Linux-$HYPERION_ARCH.deb \
-    -O /tmp/Hyperion.deb
+    --progress=dot:giga -O /tmp/Hyperion.deb
 
 # Cleanup step
 # hadolint ignore=DL3008
