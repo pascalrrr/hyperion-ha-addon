@@ -4,7 +4,7 @@ description: >-
   A Home Assistant Addon for Hyperion, an
   Open Source Bias/Ambient Lighting Solution
 version: dev
-image: ghcr.io/floridaman7588/hyperion-ha-addon-{arch}
+image: ghcr.io/pascalrrr/hyperion-ha-addon-{arch}
 slug: hyperion
 init: false
 arch:
