@@ -3,7 +3,7 @@ FROM ${BUILD_FROM:-ghcr.io/home-assistant/amd64-base-debian:bookworm}
 
 # Static build args
 ARG TARGETARCH
-ARG HYPERION_VERSION="2.1.1"
+ARG HYPERION_VERSION="2.2.1"
 ARG HYPERION_URL="https://github.com/hyperion-project/hyperion.ng"
 ARG OPENSSL_VERSION="1.1.1w-0+deb11u4"
 ARG LIBSSL_VERSION="1.1.1w-0+deb11u4"
